@@ -1,11 +1,14 @@
 import React from "react";
 import { Text, View, Image } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import homeScreen from "./homeScreen";
-import settingsScreen from "./settingsScreen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import homeScreen from "../screens/homeScreen";
+import settingsScreen from "../screens/settingsScreen";
+import listScreen from "../screens/listScreen";
 import home from "../assets/home.png";
 import setting from "../assets/setting.png";
+import list from "../assets/list.png";
+
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +28,13 @@ const AppNavigator = () => {
           component={homeScreen}
           options={{
             tabBarIcon: ({ color, size }) => <Image source={home} />,
+          }}
+        />
+        <Tab.Screen
+          name="listScreen"
+          component={listScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => <Image source={list} />,
           }}
         />
         <Tab.Screen
