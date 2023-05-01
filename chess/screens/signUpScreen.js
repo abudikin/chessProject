@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/core";
 import {
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
   View,
+  Text,
+  TouchableOpacity,
   Image,
+  TextInput,
+  StyleSheet,
 } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { auth } from "../firebase";
+import { ref, set } from "firebase/database";
+import { db } from "../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
-
-const LoginScreen = () => {
+const SignUpScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setName] = useState("");
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -27,16 +29,24 @@ const LoginScreen = () => {
     return unsubscribe;
   }, []);
 
-  const handleLogin = () => {
+  const handleSignUp = () => {
     auth
-      .signInWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log("Logged in with:", user.email);
+        console.log("Registered with:", user.email);
+        addData();
       })
       .catch((error) => alert(error.message));
   };
-
+  
+  const addData = () => {
+    set(ref(db, "users/" + username), {
+      name: username,
+      email: email,
+    });
+  };
+  
   return (
     <View
       style={styles.container}
@@ -44,59 +54,53 @@ const LoginScreen = () => {
     >
       <View style={styles.inputContainer}>
         <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
+          value={username}
+          placeholder="Полное имя"
           style={styles.input}
+          onChangeText={(text) => setName(text)}
         />
         <TextInput
-          placeholder="Пароль"
+          value={email}
+          placeholder="email"
+          style={styles.input}
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          secureTextEntry
           value={password}
+          placeholder="Пароль"
           onChangeText={(text) => setPassword(text)}
           style={styles.input}
-          secureTextEntry
         />
       </View>
-
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={handleLogin}
+          onPress={handleSignUp}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>Залогиниться</Text>
+          <Text style={styles.buttonText}>Зарегистрироваться</Text>
         </TouchableOpacity>
       </View>
-      <Text style={{marginTop:30}}>
-        или
-      </Text>
-      <View style = {styles.buttonIconGroup}>
+      <Text style={{ marginTop: 30 }}>Или</Text>
+      <View style={styles.buttonIconGroup}>
         <TouchableOpacity>
-          <Image
-            source={require("../assets/icons/google.png")}
-          />
+          <Image source={require("../assets/icons/google.png")} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Image
-            source={require("../assets/icons/apple.png")}
-          />
+          <Image source={require("../assets/icons/apple.png")} />
         </TouchableOpacity>
       </View>
-      <View style = {styles.link}>
-        <Text>
-          Еще нет аккаунта?
-        </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("SignUpScreen")}>
-          <Text>Регистрация</Text>
+      <View style={styles.link}>
+        <Text>Уже есть аккаунт?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("loginScreen")}>
+          <Text>Залогиниться</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("PasswordResetScreen")}>
-          <Text>Я забыл свой пароль</Text>
-        </TouchableOpacity>
     </View>
   );
 };
 
-export default LoginScreen;
+export default SignUpScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -114,7 +118,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginTop: 40,
     borderRadius: 5,
-    
   },
   buttonContainer: {
     width: "60%",
@@ -145,13 +148,13 @@ const styles = StyleSheet.create({
     borderColor: "#0782f9",
     borderWidth: 2,
   },
-  buttonIconGroup:{
+  buttonIconGroup: {
     flex: 1,
     flexDirection: "row",
     gap: 18,
-    marginTop:10,
+    marginTop: 10,
   },
-  link:{
+  link: {
     flex: 1,
     flexDirection: "row",
     gap: 10,

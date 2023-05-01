@@ -1,20 +1,18 @@
 import React from "react";
 import { Text, View, Image } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import homeScreen from "../screens/homeScreen";
 import settingsScreen from "../screens/settingsScreen";
 import listScreen from "../screens/listScreen";
-import home from "../assets/home.png";
-import setting from "../assets/setting.png";
-import list from "../assets/list.png";
+import home from "../assets/icons/home.png";
+import setting from "../assets/icons/setting.png";
+import list from "../assets/icons/list.png";
 
 
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
   return (
-    <NavigationContainer>
       <Tab.Navigator
         screenOptions={{
           tabBarActiveBackgroundColor: "#BC6C25",
@@ -45,7 +43,6 @@ const AppNavigator = () => {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 };
 
