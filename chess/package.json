@@ -11,6 +11,7 @@
   "dependencies": {
     "@firebase/app-compat": "^0.2.9",
     "@react-native-async-storage/async-storage": "^1.18.1",
+    "@react-native-community/datetimepicker": "^7.0.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/core": "^6.4.8",
@@ -22,7 +23,7 @@
     "react": "18.2.0",
     "react-native": "0.71.7",
     "react-native-gesture-handler": "^2.9.0",
-    "react-native-reanimated": "^3.1.0",
+    "react-native-reanimated": "~2.14.4",
     "react-native-safe-area-context": "^4.5.1",
     "react-native-screens": "^3.20.0"
   },

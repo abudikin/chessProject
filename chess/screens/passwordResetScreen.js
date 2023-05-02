@@ -22,6 +22,7 @@ const LoginScreen = () => {
       auth.sendPasswordResetEmail(email)
         .then(() => {
           alert("Password reset email has sent successfully");
+          navigation.replace("loginScreen");
         })
         .catch((error) => {  
           const errorMessage = error.message;
